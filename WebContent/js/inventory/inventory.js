@@ -31,6 +31,74 @@ $(document).ready(function()
     	$("#createTicketDiv").dialog("open");
     });
     
+	$("#ticketEmailForm").tooltip({
+        position: {
+            my: "center bottom-15",
+            at: "center top",
+            using: function( position, feedback ) {
+                $( this ).css( position );
+                $( "<div>" )
+                .addClass( "arrow" )
+                .addClass( feedback.vertical )
+                .addClass( feedback.horizontal )
+                .appendTo( this );
+            }
+        }
+    });
+	
+	$.validator.setDefaults(
+	{
+	    //submitHandler: function() { alert("submitted!"); },
+	    showErrors: function(map, list) {
+	        // there's probably a way to simplify this
+	        var focussed = document.activeElement;
+	        if (focussed && $(focussed).is("input, textarea")) {
+	            $(this.currentForm).tooltip("close", {
+	                currentTarget: focussed
+	            }, true)
+	        }
+	        this.currentElements.removeAttr("title").removeClass("ui-state-highlight");
+	        $.each(list, function(index, error) {
+	            $(error.element).attr("title", error.message).addClass("ui-state-highlight");
+	        });
+	        if (focussed && $(focussed).is("input, textarea")) {
+	            $(this.currentForm).tooltip("open", {
+	                target: focussed
+	            });
+	        }
+	    }
+	});
+	
+	$("#ticketEmailForm").validate(
+	{
+	    messages:
+	    {
+	        "emailFrom":"Please Enter E-Mail",
+			"emailTo":"Please enter E-Mail TO",
+			"emailSubject":"Please Enter Email Subject",
+			"emailMessage":"Please Enter Message"
+					
+	    },              
+	    rules: 
+	    {
+	    	"emailFrom":{
+	            "required": true
+	    	} ,
+		
+	    	"emailTo":{
+	    		"required": true
+	    	},
+		
+			"emailSubject":{
+		        "required": true
+		    },
+			"emailMessage":{
+		        "required": true
+		    }
+			
+	    }
+	});
+	
     $('#ticketEmailForm').livequery(function()
 	{
 		$("#ticketEmailForm").ajaxForm (
@@ -437,32 +505,35 @@ $(document).ready(function()
 	    messages:
 	    {
 	        "room.no":"Please select Building and Room",
-			"room.doorCode":"Please enter Door Code",
-			"room.avControlPanelLocation":"Please select AV Control Panel Location",
+			"doorCode":"Please enter Door Code",
+			"avControlPanelLocation":"Please select AV Control Panel Location",
 			"room.noOfProjectors":"Please enter Number of Projectors",
 			"room.projectorModel":"Please select Projector Model",
-			"room.roomType":"Please select Room Type",			
+			"roomType":"Please select Room Type",			
 			"room.bulbHoursUsed":"Please enter Bulb Hours Used",
 			"room.dellTag":"Please enter Dell Tag",
-			"room.comments":"Please enter Comments",
+			"comments":"Please enter Comments",
 			"Dell Tag 1":"Please enter Dell Tag 1",
 			"room.barCodeOnProjector":"Please enter Barcode On Projector",
 			"room.barCodeOnComputer":"Please enter Barcode On Computer",
 			"room.projectorInstallYear":"Please enter Projector Install Year",
-			"room.aVPanelModel":"Please enter AV Panel Model",
+			"aVPanelModel":"Please enter AV Panel Model",
 			"room.filterHours":"Please enter Filter Hours",
-			"room.capacity":"Please enter Capacity",
+			"capacity":"Please enter Capacity",
 			"room.campus":"Please enter Campus",
-			"room.whiteboardVsScreen":"Please enter White Board Vs Screen",
-			"room.mediaPlayer":"Please enter Media Player",
-			"room.soundSystem":"Please enter Sound System",
+			"whiteboardVsScreen":"Please enter White Board Vs Screen",
+			"podiumType":"Please select Podium Type",
+			"podiumKeyCode":"Please Podium Key Code",
+			"mediaPlayer":"Please enter Media Player",
+			"soundSystem":"Please enter Sound System",
+			"avEquipLocks":"Please Enter Av Equip Locks",
 			"room.specialSoftware":"Please enter Special Software",
-			"room.otherRequests":"Please enter Other Requests",
+			"otherRequests":"Please enter Other Requests",
 			"room.studentComputers":"Please enter Student Computers",
-			"room.other":"Please enter Other",
-			"room.extra1":"Please enter Extra1 ",			
-			"room.extra2":"Please enter Extra2 ",
-			"room.extra3":"Please enter Extra3 ",
+			"other":"Please enter Other",
+			"extra1":"Please enter Extra1 ",			
+			"extra2":"Please enter Extra2 ",
+			"extra3":"Please enter Extra3 ",
 			"room.equipLocks":"Please enter EquipLocks "
 	    },              
 	    rules: 
@@ -478,10 +549,10 @@ $(document).ready(function()
 			"room.linkToRoomDetails":{
 		        "required": true
 		    },
-			"room.doorCode":{
+			"doorCode":{
 		        "required": true
 		    },
-			"room.avControlPanelLocation":{
+			"avControlPanelLocation":{
 		        "required": true
 		    },
 			"room.noOfProjectors":{
@@ -490,7 +561,7 @@ $(document).ready(function()
 			"room.projectorModel":{
 		        "required": true
 		    },
-			"room.roomType":{
+			"roomType":{
 		        "required": true
 		    },		
 			"room.bulbHoursUsed":{
@@ -499,7 +570,7 @@ $(document).ready(function()
 			"room.dellTag":{
 		        "required": true
 		    },		
-			"room.comments":{
+			"comments":{
 		        "required": true
 		    },
 			"Dell Tag 1":{
@@ -514,49 +585,58 @@ $(document).ready(function()
 			"room.barCodeOnComputer":{
 		        "required": true
 		    },
-			"room.aVPanelModel":{
+			"aVPanelModel":{
 		        "required": true
 		    },
 			"room.filterHours":{
 		        "required": true
 		    },
-			"room.capacity":{
+			"capacity":{
 		        "required": true
 		    },
 			"room.campus":{
 		        "required": true
 		    },
-			"room.otherRequests":{
+			"otherRequests":{
 		        "required": true
 		    },
-			"room.mediaPlayer":{
+			"mediaPlayer":{
 		        "required": true
 		    },
-			"room.soundSystem":{
+			"soundSystem":{
+		        "required": true
+		    },
+			"avEquipLocks":{
 		        "required": true
 		    },
 			"room.specialSoftware":{
 		        "required": true
 		    },
-			"room.whiteboardVsScreen":{
+			"whiteboardVsScreen":{
 		        "required": true
-		    },			
+		    },	
+			"podiumType":{
+		        "required": true
+		    },	
+			"podiumKeyCode":{
+		        "required": true
+		    },	
 			"room.studentComputers":{
 		        "required": true
 		    },
-			"room.other":{
+			"other":{
 		        "required": true
 		    },
-			"room.extra1":{
+			"extra1":{
 		        "required": true
 		    },
-			"room.extra2":{
+			"extra2":{
 		        "required": true
 		    },
-			"room.extra3":{
+			"extra3":{
 		        "required": true
 		    },
-			"room.lastUpdatedBy":{
+			"lastUpdatedBy":{
 		        "required": true
 		    },
 			"room.equipLocks":{
@@ -677,6 +757,97 @@ $(document).ready(function()
 		        }
 		    }
 		});
+	});
+	
+	$("#computerInformationForm").tooltip({
+        position: {
+            my: "center bottom-15",
+            at: "center top",
+            using: function( position, feedback ) {
+                $( this ).css( position );
+                $( "<div>" )
+                .addClass( "arrow" )
+                .addClass( feedback.vertical )
+                .addClass( feedback.horizontal )
+                .appendTo( this );
+            }
+        }
+    });
+	
+	$.validator.setDefaults(
+	{
+	    //submitHandler: function() { alert("submitted!"); },
+	    showErrors: function(map, list) {
+	        // there's probably a way to simplify this
+	        var focussed = document.activeElement;
+	        if (focussed && $(focussed).is("input, textarea")) {
+	            $(this.currentForm).tooltip("close", {
+	                currentTarget: focussed
+	            }, true)
+	        }
+	        this.currentElements.removeAttr("title").removeClass("ui-state-highlight");
+	        $.each(list, function(index, error) {
+	            $(error.element).attr("title", error.message).addClass("ui-state-highlight");
+	        });
+	        if (focussed && $(focussed).is("input, textarea")) {
+	            $(this.currentForm).tooltip("open", {
+	                target: focussed
+	            });
+	        }
+	    }
+	});
+	
+	$("#computerInformationForm").validate(
+	{
+	    messages:
+	    {
+	        "lastUpdatedBy":"Please Enter Last Updateted By",
+			"lastUpdatedtime":"Please Enter Last Updated Time",
+			"computerSerial":"Please Enter Computer Serial ",
+			"computerMUBarCode":"Please Enter Computer MU BarCode",
+			"specialSoftware":"Please Enter Special Software",
+			"monitorType":"Please Enter Monitor Type",
+			"equipLocks":"Please Enter Equip Locks",
+			"userPass":"Please Enter User Pass",
+			"bIOSPass":"Please Enter BIOS Pass",
+			"smartShieldPass":"Please Enter Smart Shield Pass"
+					
+	    },              
+	    rules: 
+	    {
+	    	"lastUpdatedBy":{
+	            "required": true
+	    	} ,
+		
+	    	"lastUpdatedtime":{
+	    		"required": true
+	    	},
+		
+			"computerSerial":{
+		        "required": true
+		    },
+			"computerMUBarCode":{
+		        "required": true
+		    },
+			"specialSoftware":{
+		        "required": true
+		    },
+			"monitorType":{
+		        "required": true
+		    },
+			"equipLocks":{
+		        "required": true
+		    },
+			"userPass":{
+		        "required": true
+		    },
+			"bIOSPass":{
+		        "required": true
+		    },
+			"smartShieldPass":{
+		        "required": true
+		    }
+	    }
 	});
 	
 	$('#computerInformationForm').livequery(function()
